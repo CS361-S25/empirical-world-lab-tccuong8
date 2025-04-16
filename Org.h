@@ -15,11 +15,11 @@ class Organism {
 
     void SetPoints(double _in) {points = _in;}
     void AddPoints(double _in) {points += _in;}
+    int ShowPoints() {return points;}
 
 
     void Process(double _in) {
         points += _in;
-        std::cout << "Points: " << points << std::endl;
     }
 
     emp::Ptr<Organism> CheckReproduction() {

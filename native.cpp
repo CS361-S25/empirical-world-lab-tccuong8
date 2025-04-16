@@ -24,8 +24,7 @@ int main(int argc, char* argv[])
   std::cout << world.GetNumOrgs() << std::endl;
   // world.Update();
 
-  for ( int i = 0; i < 1000; i++ ) {
-    std::cout << "Update " << i << std::endl;
+  for ( int i = 0; i < 20; i++ ) {
     world.Update();
   }
   

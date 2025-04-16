@@ -26,17 +26,6 @@ public:
     void Update()
     {
         emp::World<Organism>::Update();
-        std::cout << "Updating!" << std::endl; // feel free to get rid of this
-        // int wSize = GetSize();
-        // for (int i = 0; i < wSize; i++)
-        // {
-        //     if (!IsOccupied(i))
-        //     {
-        //         continue;
-        //     }
-        //     Organism org = GetOrg(i);
-        //     org.Process();
-        // }
 
         // We don’t want to give unfair advantage to organisms at the beginning of the list, since if they always get to reproduce first, genotypes could persist in the population even if they aren’t actually better, but just because they happen to be first in the list and so get checked for reproduction before everything else. Empirical has a useful function for getting a permutation of a list for this purpose:
         emp::vector<size_t> schedule = emp::GetPermutation(random, GetSize());
@@ -46,7 +35,7 @@ public:
             {
                 continue;
             }
-            Organism org = GetOrg(i);
+            Organism& org = GetOrg(i);
             org.Process(100);
         }
 
@@ -59,9 +48,11 @@ public:
             {
                 continue;
             }
+            // std::cout << "Org [" << i << "]: " << pop[i]->ShowPoints() << std::endl;
             emp::Ptr<Organism> offspring = pop[i]->CheckReproduction();
             //this is implemented in Organism 
             if(offspring) {
+                // std::cout << "Org [" << i << "] has reproduced!" << std::endl;
                 DoBirth(*offspring, i);  //i is the parent's position in the world
             }
         }
