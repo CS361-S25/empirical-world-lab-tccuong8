@@ -6,7 +6,8 @@
 
 emp::web::Document doc{"target"};
 
-class AEAnimator : public emp::web::Animate {
+class AEAnimator : public emp::web::Animate
+{
 
     // arena width and height
     const int num_h_boxes = 10;
@@ -17,24 +18,43 @@ class AEAnimator : public emp::web::Animate {
 
     emp::web::Canvas canvas{width, height, "canvas"};
 
-    public:
+    emp::Random random{5};
+    OrgWorld world{random};
 
-    AEAnimator() {
+public:
+    AEAnimator()
+    {
         // shove canvas into the div
         // along with a control button
         doc << canvas;
         doc << GetToggleButton("Toggle");
         doc << GetStepButton("Step");
 
+        Organism *new_org = new Organism(&random);
+        world.Inject(*new_org);
+
+        world.SetPopStruct_Grid(num_w_boxes, num_h_boxes);
     }
 
-    void DoFrame() override {
+    void DoFrame() override
+    {
         canvas.Clear();
+        world.Update();
 
+        int org_num = 0;
+        for (int x = 0; x < num_w_boxes; x++){
+            for (int y = 0; y < num_h_boxes; y++) {
+                if (world.IsOccupied(org_num)) {
+                    canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "black", "black");
+                } else {
+                    canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "white", "black");
+                }
+                org_num++;
+            }
+        }
     }
-
 };
 
 AEAnimator animator;
 
-int main() {animator.Step();}
+int main() { animator.Step(); }
