@@ -4,6 +4,7 @@
 #include "emp/Evolve/World.hpp"
 #include "emp/math/random_utils.hpp"
 #include "emp/math/Random.hpp"
+#include "emp/math/math.hpp"
 
 #include "Org.h"
 
@@ -31,6 +32,49 @@ public:
         emp::Ptr<Organism> org = pop[i];
         pop[i] = nullptr;
         return org;
+    }
+
+    std::vector<size_t> GetNeighbors(int i)
+    {
+        // Use i to calculate the neighbors' position in the world and check for occupancy via remainder and mosulus calculation. Add valid ones into a vector and randomly choose one of them to place the organism in. If there's no valid neighbors, just place it back at its original location.
+        const int W = GetWidth();
+        const int H = GetHeight();
+        const int id = i;
+        const int x = id % W;
+        const int y = id / W;
+
+        std::vector<size_t> neighbor_ids;
+        for (int dx = -1; dx <= 1; ++dx)
+        {
+            for (int dy = -1; dy <= 1; ++dy)
+            {
+                if (dx == 0 && dy == 0)
+                    continue;
+                int nx = emp::Mod((x + dx), W);
+                int ny = emp::Mod((y + dy), H);
+                int pos = nx + ny * W;
+                neighbor_ids.push_back(pos);
+            }
+        }
+        return neighbor_ids;
+    }
+
+    int GetRandomEmptyNeighborSpot(std::vector<size_t> neighbor_ids)
+    {
+        emp::vector<size_t> empty_neighbors;
+        for (size_t id : neighbor_ids)
+        {
+            if (!IsOccupied(id))
+            {
+                empty_neighbors.push_back(id);
+            }
+        }
+        if (empty_neighbors.size() == 0)
+        {
+            return -1; // No empty neighbors
+        }
+        emp::vector<size_t> schedule = emp::GetPermutation(random, empty_neighbors.size());
+        return empty_neighbors[schedule[0]];
     }
 
     void Update()
@@ -64,18 +108,28 @@ public:
             if (offspring)
             {
                 // std::cout << "Org [" << i << "] has reproduced!" << std::endl;
-                DoBirth(*offspring, i); 
+                DoBirth(*offspring, i);
                 // i is the parent's position in the world
             }
             emp::Ptr<Organism> movedOrg = ExtractOrganism(i);
-            emp::WorldPosition pos = GetRandomNeighborPos(i);
-            while (pos.IsValid() && IsOccupied(pos))
+
+            // Try 1: Newly defined methods
+            // std::vector<size_t> neighbor_ids = GetNeighbors(i);
+            // int pos_schedule = GetRandomEmptyNeighborSpot(neighbor_ids);
+
+            // Try 2: Hardcoded loop limit
+            int pos_target = i;
+            for (int j = 0; j < 9; ++j)
             {
-                pos = GetRandomNeighborPos(i);
+                emp::WorldPosition pos = GetRandomNeighborPos(i);
+                if (pos.IsValid() && !IsOccupied(pos))
+                {
+                    pos_target = pos.GetIndex();
+                    break;
+                }
             }
-            AddOrgAt(movedOrg, pos);
-
-
+           
+            AddOrgAt(movedOrg, pos_target);
         }
     }
 };

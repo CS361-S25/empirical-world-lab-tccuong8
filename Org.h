@@ -33,7 +33,7 @@ class Organism {
     }
 
     emp::Ptr<Organism> CheckReproduction() {
-        if (CanReproduce() == 1) {
+        if (species == 1 && CanReproduce() == 1) {
             emp::Ptr<Organism> offspring = new Organism(species, random);
             points = 0;
             return offspring;
