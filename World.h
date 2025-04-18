@@ -23,6 +23,16 @@ public:
     {
     }
 
+    // First, you’ll need to make a new method in your World subclass that removes an organism from the population and returns it. I recommend calling it ExtractOrganism. You already know how to get an organism at a particular position in the world, and ‘removing’ it from the population just involves setting its spot to null:
+    // pop[i] = nullptr;
+    // Then you just need to return the organism that you grabbed.
+    emp::Ptr<Organism> ExtractOrganism(int i)
+    {
+        emp::Ptr<Organism> org = pop[i];
+        pop[i] = nullptr;
+        return org;
+    }
+
     void Update()
     {
         emp::World<Organism>::Update();
@@ -35,7 +45,7 @@ public:
             {
                 continue;
             }
-            Organism& org = GetOrg(i);
+            Organism &org = GetOrg(i);
             org.Process(100);
         }
 
@@ -50,11 +60,22 @@ public:
             }
             // std::cout << "Org [" << i << "]: " << pop[i]->ShowPoints() << std::endl;
             emp::Ptr<Organism> offspring = pop[i]->CheckReproduction();
-            //this is implemented in Organism 
-            if(offspring) {
+            // this is implemented in Organism
+            if (offspring)
+            {
                 // std::cout << "Org [" << i << "] has reproduced!" << std::endl;
-                DoBirth(*offspring, i);  //i is the parent's position in the world
+                DoBirth(*offspring, i); 
+                // i is the parent's position in the world
             }
+            emp::Ptr<Organism> movedOrg = ExtractOrganism(i);
+            emp::WorldPosition pos = GetRandomNeighborPos(i);
+            while (pos.IsValid() && IsOccupied(pos))
+            {
+                pos = GetRandomNeighborPos(i);
+            }
+            AddOrgAt(movedOrg, pos);
+
+
         }
     }
 };
