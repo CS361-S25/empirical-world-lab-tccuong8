@@ -3,7 +3,6 @@
 
 #include "emp/math/Random.hpp"
 #include "emp/tools/string_utils.hpp"
-#include "Red.h"
 
 class Organism {
     private:

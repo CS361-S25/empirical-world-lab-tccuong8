@@ -3,6 +3,8 @@
 #include "emp/web/web.hpp"
 #include "World.h"
 #include "Org.h"
+#include "Red.h"
+
 
 emp::web::Document doc{"target"};
 
@@ -30,7 +32,7 @@ public:
         doc << GetToggleButton("Toggle");
         doc << GetStepButton("Step");
 
-        Red *org1 = new Red(&random);
+        emp::Ptr<Organism> org1 = new Red(&random);
         world.Inject(*org1);
         // Organism *org2 = new Organism(&random);
         // world.Inject(*org2);
