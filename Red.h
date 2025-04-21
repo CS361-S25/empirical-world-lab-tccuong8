@@ -1,3 +1,6 @@
+#ifndef RED_H
+#define RED_H
+
 #include "Org.h"
 
 class Red : public Organism {
@@ -14,3 +17,5 @@ class Red : public Organism {
 
         
 };
+
+#endif

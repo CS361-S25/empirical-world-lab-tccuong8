@@ -3,6 +3,8 @@
 #include "emp/web/web.hpp"
 #include "World.h"
 #include "Org.h"
+#include "Red.h"
+
 
 emp::web::Document doc{"target"};
 
@@ -30,8 +32,8 @@ public:
         doc << GetToggleButton("Toggle");
         doc << GetStepButton("Step");
 
-        Red *org1 = new Red(&random);
-        world.Inject(*org1);
+        emp::Ptr<Organism> org1 = new Red(&random);
+        world.Inject(org1);
         // Organism *org2 = new Organism(&random);
         // world.Inject(*org2);
 
@@ -65,7 +67,7 @@ public:
             {
                 if (world.IsOccupied(org_num))
                 {
-                    this->DrawOrganism(x, y, world.GetOrg(org_num).GetColor());
+                    this->DrawOrganism(x, y, world.GetOrg(org_num)->GetColor());
                 }
                 else
                 {
