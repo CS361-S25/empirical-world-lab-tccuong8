@@ -30,26 +30,21 @@ public:
         doc << GetToggleButton("Toggle");
         doc << GetStepButton("Step");
 
-        Organism *org1 = new Organism(1, &random);
+        Red *org1 = new Red(&random);
         world.Inject(*org1);
-        Organism *org2 = new Organism(2, &random);
-        world.Inject(*org2);
+        // Organism *org2 = new Organism(&random);
+        // world.Inject(*org2);
 
         world.SetPopStruct_Grid(num_w_boxes, num_h_boxes);
     }
 
-    void DrawOrganism(int x, int y, int species)
+    
+
+    void DrawOrganism(int x, int y, std::string color)
     {
+        int i = x + num_w_boxes * y;
         // Draw the organism at the given x and y coordinates
-        // with the given species color
-        if (species == 1)
-        {
-            canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "red", "black");
-        }
-        else if (species == 2)
-        {
-            canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, "blue", "black");
-        }
+        canvas.Rect(x * RECT_SIDE, y * RECT_SIDE, RECT_SIDE, RECT_SIDE, color, "black");
     }
 
     void DrawBlank(int x, int y)
@@ -70,7 +65,7 @@ public:
             {
                 if (world.IsOccupied(org_num))
                 {
-                    this->DrawOrganism(x, y, world.GetOrg(org_num).GetSpecies());
+                    this->DrawOrganism(x, y, world.GetOrg(org_num).GetColor());
                 }
                 else
                 {

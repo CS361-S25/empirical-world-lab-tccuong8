@@ -3,6 +3,7 @@
 
 #include "emp/math/Random.hpp"
 #include "emp/tools/string_utils.hpp"
+#include "Red.h"
 
 class Organism {
     private:
@@ -11,14 +12,14 @@ class Organism {
         emp::Ptr<emp::Random> random;
 
     public:
-    Organism(int _species, emp::Ptr<emp::Random> _random, double _points=0.0) :
-        species(_species), random(_random), points(_points) {;}
+    Organism(emp::Ptr<emp::Random> _random, double _points=0.0) :
+        random(_random), points(_points) {;}
 
     void SetPoints(double _in) {points = _in;}
     void AddPoints(double _in) {points += _in;}
     int ShowPoints() {return points;}
 
-    int GetSpecies() {return species;}
+    virtual std::string GetColor() {return "black";}
 
 
     void Process(double _in) {
@@ -33,8 +34,8 @@ class Organism {
     }
 
     emp::Ptr<Organism> CheckReproduction() {
-        if (species == 1 && CanReproduce() == 1) {
-            emp::Ptr<Organism> offspring = new Organism(species, random);
+        if (species == 2 && CanReproduce() == 1) {
+            emp::Ptr<Organism> offspring = new Organism(random);
             points = 0;
             return offspring;
         }

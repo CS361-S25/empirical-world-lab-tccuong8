@@ -14,9 +14,9 @@ int main(int argc, char* argv[])
   emp::Random random(2);
   OrgWorld world(random);
 
-  Organism* org1 = new Organism(1, &random);
+  Organism* org1 = new Organism(&random);
   world.Inject(*org1);
-  Organism* org2 = new Organism(2, &random);
+  Organism* org2 = new Organism(&random);
   world.Inject(*org2);
 
   std::cout << world.size() << std::endl;
