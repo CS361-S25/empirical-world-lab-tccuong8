@@ -32,7 +32,7 @@ public:
         doc << GetToggleButton("Toggle");
         doc << GetStepButton("Step");
 
-        emp::Ptr<Organism> org1 = new Red(&random);
+        Organism *org1 = new Red(&random);
         world.Inject(*org1);
         // Organism *org2 = new Organism(&random);
         // world.Inject(*org2);

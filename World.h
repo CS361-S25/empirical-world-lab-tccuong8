@@ -46,7 +46,7 @@ public:
             {
                 continue;
             }
-            Organism &org = GetOrg(i);
+            Organism& org = GetOrg(i);
             org.Process(100);
         }
 
