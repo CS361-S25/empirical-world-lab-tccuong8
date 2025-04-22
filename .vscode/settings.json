@@ -84,6 +84,22 @@
         "stop_token": "cpp",
         "thread": "cpp",
         "cfenv": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "__tree": "cpp",
+        "__verbose_abort": "cpp",
+        "any": "cpp",
+        "codecvt": "cpp",
+        "csetjmp": "cpp",
+        "csignal": "cpp",
+        "execution": "cpp",
+        "forward_list": "cpp",
+        "future": "cpp",
+        "list": "cpp",
+        "shared_mutex": "cpp",
+        "source_location": "cpp",
+        "stack": "cpp",
+        "strstream": "cpp",
+        "typeindex": "cpp",
+        "valarray": "cpp"
     }
 }

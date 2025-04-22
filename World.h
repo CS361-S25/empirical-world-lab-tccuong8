@@ -34,6 +34,21 @@ public:
         return org;
     }
 
+    int GetAvailableNeighborPlacement(int i)
+    {
+        int pos_target = i;
+        for (int j = 0; j < 9; ++j)
+        {
+            emp::WorldPosition pos = GetRandomNeighborPos(i);
+            if (pos.IsValid() && !IsOccupied(pos))
+            {
+                pos_target = pos.GetIndex();
+                break;
+            }
+        }
+        return pos_target;
+    }
+
     void Update()
     {
         emp::World<Organism>::Update();
@@ -46,8 +61,8 @@ public:
             {
                 continue;
             }
-            Organism& org = GetOrg(i);
-            org.Process(100);
+            emp::Ptr<Organism> org = pop[i];
+            org->Process(100);
         }
 
         // Organisms don’t have anyway of gaining points yet though. Change the Process method so that it takes an argument points and adds those points to what the organism has already. Give them 100 points per update for now. We could call the CheckReproduction method right away as well, but this could lead to similar problems mentioned before where some organisms are lucky and get resources and the chance to reproduce right away.
@@ -65,28 +80,12 @@ public:
             if (offspring)
             {
                 // std::cout << "Org [" << i << "] has reproduced!" << std::endl;
-                DoBirth(*offspring, i);
+                AddOrgAt(offspring, this->GetAvailableNeighborPlacement(i));
                 // i is the parent's position in the world
             }
             emp::Ptr<Organism> movedOrg = ExtractOrganism(i);
 
-            // Try 1: Newly defined methods
-            // std::vector<size_t> neighbor_ids = GetNeighbors(i);
-            // int pos_schedule = GetRandomEmptyNeighborSpot(neighbor_ids);
-
-            // Try 2: Hardcoded loop limit
-            int pos_target = i;
-            for (int j = 0; j < 9; ++j)
-            {
-                emp::WorldPosition pos = GetRandomNeighborPos(i);
-                if (pos.IsValid() && !IsOccupied(pos))
-                {
-                    pos_target = pos.GetIndex();
-                    break;
-                }
-            }
-           
-            AddOrgAt(movedOrg, pos_target);
+            AddOrgAt(movedOrg, this->GetAvailableNeighborPlacement(i));
         }
     }
 };

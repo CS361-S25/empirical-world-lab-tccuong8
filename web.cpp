@@ -4,7 +4,7 @@
 #include "World.h"
 #include "Org.h"
 #include "Red.h"
-
+#include "Blue.h"
 
 emp::web::Document doc{"target"};
 
@@ -32,15 +32,13 @@ public:
         doc << GetToggleButton("Toggle");
         doc << GetStepButton("Step");
 
-        Organism *org1 = new Red(&random);
-        world.Inject(*org1);
-        // Organism *org2 = new Organism(&random);
-        // world.Inject(*org2);
+        emp::Ptr<Organism> org1 = new Red(&random);
+        world.AddOrgAt(org1, 0);
+        emp::Ptr<Organism> org2 = new Blue(&random);
+        world.AddOrgAt(org2, (num_h_boxes * num_w_boxes) - 1);
 
         world.SetPopStruct_Grid(num_w_boxes, num_h_boxes);
     }
-
-    
 
     void DrawOrganism(int x, int y, std::string color)
     {
